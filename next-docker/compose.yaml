@@ -1,0 +1,44 @@
+version: '3.8'
+
+services:
+  fronted:
+    # depends_on:
+    #   - db
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - 3000:3000
+    develop:
+      watch:
+        - path: ./package.json
+          action: rebuild
+        - path: ./next.config.json
+          action: rebuild
+        - path: ./package-lock.json
+          action: rebuild
+        - path: .
+          target: /app
+          action: sync
+    
+    # define the environment variables
+    environment:
+      # we're using MongoDB atlas so we need to pass in the connection string
+      DB_URL: mongodb+srv://userdb:NNopyzCIMM2dYra0@clustermern.zld5gqi.mongodb.net/?retryWrites=true&w=majority
+  # we're using MongoDB atlas so we don't need to run a local instance of MongoDB
+  # but if you want to run a local instance, you can do it this way
+  # db:
+  #   image: mongo
+  #   ports:
+  #     - 27018:27018
+  #   environment:
+  #     - MONGO_INITDB_ROOT_USERNAME=userdb
+  #     - MONGO_INITDB_ROOT_PASSWORD=NNopyzCIMM2dYra0
+  #   volumes:
+  #     - tasked:/data/db
+
+volumes:
+  tasked:
+        
+        
+        
